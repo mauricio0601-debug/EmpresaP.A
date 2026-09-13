@@ -1,0 +1,2 @@
+nome do produto: josé; preço R$:5.0; quantidade:2
+nome do produto: andré; preço R$:2.0; quantidade:9
