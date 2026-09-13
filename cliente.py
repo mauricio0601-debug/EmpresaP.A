@@ -1,7 +1,11 @@
-
 import re
 import unicodedata
 import os
+from colorama import Fore, Style, init
+
+init()
+
+ARQUIVO = "Cliente.txt"
 
 
 # =========================================================
@@ -35,21 +39,21 @@ def encerrar_programa():
     Permite encerrar o programa de maneira amigável
     quando o usuário pressiona Ctrl+C ou envia EOF.
     """
-    print("\nPrograma encerrado pelo usuário.")
+    print(Fore.CYAN + "\nPrograma encerrado pelo usuário." + Style.RESET_ALL)
     raise SystemExit
 
 
 def ler_entrada(mensagem):
     try:
-        return input(mensagem).strip()
+        return input(Fore.LIGHTBLACK_EX + mensagem + Style.RESET_ALL).strip()
     except (KeyboardInterrupt, EOFError):
         encerrar_programa()
 
 
 def cabecalho():
-    print("=" * 40)
+    print(Fore.BLUE + "=" * 40)
     print("        CADASTRO DE CLIENTES")
-    print("=" * 40)
+    print("=" * 40 + Style.RESET_ALL)
     print()
 
 
@@ -121,7 +125,7 @@ def cadastrar_nome():
         cabecalho()
 
         if erro:
-            print(erro)
+            print(Fore.YELLOW + erro + Style.RESET_ALL)
             print()
 
         nome = ler_entrada("Nome completo: ")
@@ -221,11 +225,11 @@ def cadastrar_email(nome):
         limpar_tela()
         cabecalho()
 
-        print(f"Nome completo: {nome}")
+        print(Fore.GREEN + f"Nome completo: {nome}" + Style.RESET_ALL)
         print()
 
         if erro:
-            print(erro)
+            print(Fore.YELLOW + erro + Style.RESET_ALL)
             print()
 
         email = ler_entrada("E-mail Gmail: ")
@@ -312,12 +316,12 @@ def cadastrar_telefone(nome, email):
         limpar_tela()
         cabecalho()
 
-        print(f"Nome completo: {nome}")
-        print(f"E-mail: {email}")
+        print(Fore.GREEN + f"Nome completo: {nome}" + Style.RESET_ALL)
+        print(Fore.GREEN + f"E-mail: {email}" + Style.RESET_ALL)
         print()
 
         if erro:
-            print(erro)
+            print(Fore.YELLOW + erro + Style.RESET_ALL)
             print()
 
         telefone = ler_entrada(
@@ -341,18 +345,18 @@ def perguntar_continuar(nome, email, telefone):
         limpar_tela()
         cabecalho()
 
-        print(f"Nome completo: {nome}")
-        print(f"E-mail: {email}")
-        print(f"Telefone: {telefone}")
+        print(Fore.GREEN + f"Nome completo: {nome}" + Style.RESET_ALL)
+        print(Fore.GREEN + f"E-mail: {email}" + Style.RESET_ALL)
+        print(Fore.GREEN + f"Telefone: {telefone}" + Style.RESET_ALL)
         print()
 
-        print("-" * 40)
+        print(Fore.BLUE + "-" * 40)
         print("Cliente cadastrado com sucesso!")
-        print("-" * 40)
+        print("-" * 40 + Style.RESET_ALL)
         print()
 
         if erro:
-            print(erro)
+            print(Fore.YELLOW + erro + Style.RESET_ALL)
             print()
 
         resposta = ler_entrada(
@@ -369,12 +373,25 @@ def perguntar_continuar(nome, email, telefone):
 
 
 # =========================================================
+# PERSISTÊNCIA EM ARQUIVO
+# =========================================================
+
+def salvar_cliente_em_arquivo(cliente):
+    with open(ARQUIVO, "a", encoding="utf-8") as arquivo:
+        arquivo.write(
+            f"Nome: {cliente['nome']}; "
+            f"E-mail: {cliente['email']}; "
+            f"Telefone: {cliente['telefone']}\n"
+        )
+
+
+# =========================================================
 # EXIBIÇÃO
 # =========================================================
 
 def exibir_cliente(cliente, numero=None):
     if numero is not None:
-        print(f"CLIENTE {numero}")
+        print(Fore.CYAN + f"CLIENTE {numero}" + Style.RESET_ALL)
 
     print(f"Nome: {cliente['nome']}")
     print(f"E-mail: {cliente['email']}")
@@ -422,6 +439,7 @@ def main():
         }
 
         clientes.append(cliente)
+        salvar_cliente_em_arquivo(cliente)
 
         # -------------------------
         # PERGUNTAR SE CONTINUA
@@ -442,9 +460,9 @@ def main():
 
     limpar_tela()
 
-    print("=" * 40)
+    print(Fore.BLUE + "=" * 40)
     print("CADASTRO ENCERRADO")
-    print("=" * 40)
+    print("=" * 40 + Style.RESET_ALL)
     print(f"Total de clientes cadastrados: {len(clientes)}")
     print()
 
