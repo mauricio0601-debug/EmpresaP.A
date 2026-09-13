@@ -225,7 +225,3 @@ def excluir_produto():
         arquivo.writelines(nova_lista)
 
     print(Fore.GREEN + "Produto excluído com sucesso!\n" + Style.RESET_ALL)
-
-
-cadastrar_produto()
-alterar_produto()
