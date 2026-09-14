@@ -5,6 +5,21 @@ init()
 
 ARQUIVO = "Produto.txt"
 
+def produto_ja_existe(nome_produto):
+    if not os.path.exists(ARQUIVO):
+        return False
+
+    with open(ARQUIVO, "r", encoding="utf-8") as arquivo:
+        for linha in arquivo:
+            dados = linha.strip().split(";")
+
+            produto_atual = dados[0].replace("nome do produto: ", "").strip()
+
+            if produto_atual.lower() == nome_produto.lower():
+                return True
+
+    return False
+
 def titulo(texto):
     print(Fore.BLUE + "\n" + "=" * 70)
     print(texto.center(70))
@@ -17,6 +32,8 @@ def cadastrar_produto():
         produto = input(Fore.LIGHTBLACK_EX + "Digite o nome do produto: \n" + Style.RESET_ALL)
         if produto =="":
             print(Fore.YELLOW + "não pode espaços vazios\n" + Style.RESET_ALL)
+        elif produto_ja_existe(produto):
+            print(Fore.YELLOW + "não produtos de mesmo nome, se deseja alterar alguma informação use a seção de alterar produto\n" + Style.RESET_ALL)
         elif produto.replace(" ", "").isalpha():
             break
         else:
@@ -57,7 +74,7 @@ def cadastrar_produto():
     with open(ARQUIVO, "a", encoding="utf-8") as arquivo:
         arquivo.write(f"nome do produto: {produto}; preço R$:{preco}; quantidade:{quantidade}\n")
 
-    print(Fore.GREEN + "Produto cadastrado com sucesso \n" + Style.RESET_ALL)
+    print(Fore.GREEN + f"Produto cadastrado com sucesso | Nome: {produto} | Preço: R$ {preco} | Quantidade: {quantidade}" + Style.RESET_ALL)
 
 
 def listar():
@@ -120,6 +137,8 @@ def alterar_produto():
 
                 if novo_nome.strip() == "":
                     print(Fore.YELLOW + "NÃO PODE CONTER ESPAÇOS VAZIOS\n" + Style.RESET_ALL)
+                elif novo_nome.lower() != produto_atual.lower() and produto_ja_existe(novo_nome):
+                    print(Fore.YELLOW + "Esse produto já está cadastrado\n" + Style.RESET_ALL)
                 elif novo_nome.replace(" ", "").isalpha():
                     break
                 else:
@@ -167,7 +186,7 @@ def alterar_produto():
     with open(ARQUIVO, "w", encoding="utf-8") as arquivo:
         arquivo.writelines(nova_lista)
 
-    print(Fore.GREEN + "Produto alterado com sucesso!\n" + Style.RESET_ALL)
+    print(Fore.GREEN + f"Produto alterado com sucesso | Nome: {novo_nome} | Preço: R$ {novo_preco} | Quantidade: {nova_quantidade}" + Style.RESET_ALL)
 
 
 def excluir_produto():
