@@ -1,0 +1,1 @@
+nome do produto: davi; preço R$:1e+24; quantidade:1
